@@ -17,7 +17,8 @@ Use the `thesrc` command to interact with the app.
 You can either run it directly:
 
 ```
-go get github.com/sourcegraph/thesrc
+go get github.com/sourcegraph/thesrc/...
+go install github.com/sourcegraph/thesrc/...
 thesrc
 ```
 
