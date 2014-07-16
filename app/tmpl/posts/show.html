@@ -1,0 +1,7 @@
+{{define "Head"}}<title>{{.Post.Title}} - thesrc</title>
+{{end}}
+
+{{define "Main"}}
+<h1><a href="{{.Post.LinkURL}}">{{.Post.Title}}</a></h1>
+<p>{{.Post.Body}}</p>
+{{end}}

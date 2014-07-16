@@ -8,7 +8,7 @@ import (
 )
 
 func TestPostsStore_Get_db(t *testing.T) {
-	want := &thesrc.Post{ID: "a"}
+	want := &thesrc.Post{ID: 1}
 
 	tx, _ := DB.Begin()
 	defer tx.Rollback()
@@ -18,7 +18,7 @@ func TestPostsStore_Get_db(t *testing.T) {
 	}
 
 	d := NewDatastore(tx)
-	post, err := d.Posts.Get("a")
+	post, err := d.Posts.Get(1)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -30,7 +30,7 @@ func TestPostsStore_Get_db(t *testing.T) {
 }
 
 func TestPostsStore_List_db(t *testing.T) {
-	want := []*thesrc.Post{{ID: "a"}}
+	want := []*thesrc.Post{{ID: 1}}
 
 	// tx, _ := DB.Begin()
 	// defer tx.Rollback()

@@ -8,7 +8,10 @@ import (
 	"net/http"
 	"runtime/debug"
 
-	"github.com/sqs/mux"
+	"github.com/gorilla/mux"
+	"github.com/gorilla/schema"
+	"github.com/sourcegraph/thesrc"
+	"github.com/sourcegraph/thesrc/router"
 )
 
 var (
@@ -19,11 +22,17 @@ var (
 	StaticDir string
 )
 
+var (
+	apiclient     = thesrc.NewClient(nil)
+	schemaDecoder = schema.NewDecoder()
+)
+
 func Handler() *mux.Router {
-	m := mux.NewRouter()
+	m := router.App()
 	m.PathPrefix("/static/").Handler(http.StripPrefix("/static/", http.FileServer(http.Dir(StaticDir))))
 	// TODO(sqs): add handlers for /favicon.ico and /robots.txt
-	m.Path("/").Methods("GET").Handler(handler(serveHome))
+	m.Get(router.Post).Handler(handler(servePost))
+	m.Get(router.Posts).Handler(handler(servePosts))
 	return m
 }
 
@@ -56,7 +65,7 @@ func runHandler(w http.ResponseWriter, r *http.Request, fn func(http.ResponseWri
 
 func handleError(w http.ResponseWriter, r *http.Request, status int, err error) {
 	w.Header().Set("cache-control", "no-cache")
-	err2 := renderTemplate(w, r, "error/error.html", status, &struct {
+	err2 := renderTemplate(w, r, "error.html", status, &struct {
 		StatusCode int
 		Status     string
 		Err        error

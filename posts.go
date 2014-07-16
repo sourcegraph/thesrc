@@ -2,6 +2,7 @@ package thesrc
 
 import (
 	"errors"
+	"strconv"
 	"time"
 
 	"github.com/sourcegraph/thesrc/router"
@@ -9,8 +10,8 @@ import (
 
 // A Post is a link and short body submitted to and displayed on thesrc.
 type Post struct {
-	// ID is a short, unique alphanumeric identifier for the post.
-	ID string
+	// ID a unique identifier for this post.
+	ID int `json:",omitempty"`
 
 	// Title of the post.
 	Title string
@@ -31,10 +32,13 @@ type Post struct {
 // PostsService interacts with the post-related endpoints in thesrc's API.
 type PostsService interface {
 	// Get a post.
-	Get(id string) (*Post, error)
+	Get(id int) (*Post, error)
 
 	// List posts.
 	List(opt *PostListOptions) ([]*Post, error)
+
+	// Create a new post. The newly created post's ID is written to post.ID.
+	Create(post *Post) error
 }
 
 var (
@@ -43,8 +47,8 @@ var (
 
 type postsService struct{ client *Client }
 
-func (s *postsService) Get(id string) (*Post, error) {
-	url, err := s.client.url(router.Post, map[string]string{"ID": id}, nil)
+func (s *postsService) Get(id int) (*Post, error) {
+	url, err := s.client.url(router.Post, map[string]string{"ID": strconv.Itoa(id)}, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -87,12 +91,34 @@ func (s *postsService) List(opt *PostListOptions) ([]*Post, error) {
 	return posts, nil
 }
 
-type MockPostsService struct {
-	Get_  func(id string) (*Post, error)
-	List_ func(opt *PostListOptions) ([]*Post, error)
+func (s *postsService) Create(post *Post) error {
+	url, err := s.client.url(router.CreatePost, nil, nil)
+	if err != nil {
+		return err
+	}
+
+	req, err := s.client.NewRequest("POST", url.String(), post)
+	if err != nil {
+		return err
+	}
+
+	_, err = s.client.Do(req, &post)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
-func (s *MockPostsService) Get(id string) (*Post, error) {
+type MockPostsService struct {
+	Get_    func(id int) (*Post, error)
+	List_   func(opt *PostListOptions) ([]*Post, error)
+	Create_ func(post *Post) error
+}
+
+var _ PostsService = &MockPostsService{}
+
+func (s *MockPostsService) Get(id int) (*Post, error) {
 	if s.Get_ == nil {
 		return nil, nil
 	}
@@ -104,4 +130,11 @@ func (s *MockPostsService) List(opt *PostListOptions) ([]*Post, error) {
 		return nil, nil
 	}
 	return s.List_(opt)
+}
+
+func (s *MockPostsService) Create(post *Post) error {
+	if s.Create_ == nil {
+		return nil
+	}
+	return s.Create_(post)
 }

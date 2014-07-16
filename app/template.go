@@ -17,7 +17,9 @@ var (
 
 func LoadTemplates() {
 	err := parseHTMLTemplates([][]string{
-		{"home.html", "common.html", "layout.html"},
+		{"posts/show.html", "common.html", "layout.html"},
+		{"posts/list.html", "common.html", "layout.html"},
+		{"error.html", "common.html", "layout.html"},
 	})
 	if err != nil {
 		log.Fatal(err)

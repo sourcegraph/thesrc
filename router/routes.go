@@ -1,6 +1,7 @@
 package router
 
 const (
-	Post  = "post"
-	Posts = "posts"
+	Post       = "post"
+	CreatePost = "post:create"
+	Posts      = "posts"
 )

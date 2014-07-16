@@ -1,0 +1,13 @@
+{{define "Head"}}<title>Posts - thesrc</title>
+{{end}}
+
+{{define "Main"}}
+<ol class="posts">
+  {{range $i, $post := .Posts}}
+  <li>
+    <a href="{{$post.LinkURL}}">{{$post.Title}}</a>
+    {{if $post.Body}}<p>{{$post.Body}}</p>{{end}}
+  </li>
+  {{end}}
+</ol>
+{{end}}
