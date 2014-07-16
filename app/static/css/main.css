@@ -39,6 +39,8 @@ body > header > h1 > a, body > footer > h1 > a {
 }
 body > header > h1 > a, body > footer > h1 > a { color: #468cbf; }
 body > header a:hover, body > footer a:hover { color: black; }
+header > h1 > a .name .the, footer > h1 > a .name .the { opacity: 0.65; }
+header > h1 > a:hover .name .the, footer > h1 > a:hover .name .the { opacity: 1; }
 
 header > h1 > a:hover .name, footer > h1 > a:hover .name {
     text-decoration: underline;
