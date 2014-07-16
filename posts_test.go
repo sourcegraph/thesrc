@@ -79,7 +79,7 @@ func TestPostsService_Create(t *testing.T) {
 	mux.HandleFunc(urlPath(t, router.CreatePost, nil), func(w http.ResponseWriter, r *http.Request) {
 		called = true
 		testMethod(t, r, "POST")
-		testBody(t, r, `{"Title":"t","LinkURL":"","Body":"","SubmittedAt":"0001-01-01T00:00:00Z","AuthorUserID":0}`+"\n")
+		testBody(t, r, `{"Title":"t","LinkURL":"","Body":"","SubmittedAt":"0001-01-01T00:00:00Z","AuthorUserID":0,"Score":0}`+"\n")
 
 		writeJSON(w, want)
 	})

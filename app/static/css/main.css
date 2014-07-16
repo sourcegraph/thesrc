@@ -95,9 +95,18 @@ form.create-post button {
 }
 
 /* posts */
+ol.posts {
+    margin: 0; padding: 0;
+    list-style-type: none;
+}
 li.post {
     margin-bottom: 8px;
     color: #aaa;
+    clear: both;
+}
+li.post div.post {
+    margin-left: 38px;
+    padding-left: 10px;
 }
 li.post .post-link {
     color: #468cbf;
@@ -109,11 +118,37 @@ li.post .post-link:hover {
 }
 li.post .post-link:visited { color: #777; }
 li.post .domain {
-    color: #888;
+    color: #999;
     font-size: 0.75em;
 }
 li.post .post-body {
-    margin: 0; padding: 0;
-    font-size: 0.85em;
-    color: #444;
+    margin: 4px 0 0 0;
+    font-size: 0.82em;
+    color: #666;
+    max-width: 600px;
+}
+li.post .post-info, li.post .post-info li { margin: 0; padding: 0; }
+li.post { position: relative; }
+li.post .post-info {
+    float: left;
+    width: 38px;
+    text-align: right;
+}
+li.post .post-info li {
+    list-style-type: none;
+    margin-bottom: 3px;
+}
+li.post .post-info li a {
+    display: inline-block;
+    text-align: center;
+    width: 25px;
+    color: #777;
+    border-radius: 3px;
+    border: solid 1px #e7e7e7;
+    background-color: #f3f3f3;
+    padding: 2px;
+    font-size: 0.75em;
+    text-decoration: none;
+    white-space: nowrap;
+    overflow: visible;
 }

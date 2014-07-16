@@ -27,6 +27,9 @@ type Post struct {
 
 	// AuthorUserID is the user ID of this post's author.
 	AuthorUserID int
+
+	// Score in points.
+	Score int
 }
 
 // PostsService interacts with the post-related endpoints in thesrc's API.
