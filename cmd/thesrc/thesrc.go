@@ -8,11 +8,13 @@ import (
 	"net/url"
 	"os"
 	"strconv"
+	"sync"
 
 	"github.com/sourcegraph/thesrc"
 	"github.com/sourcegraph/thesrc/api"
 	"github.com/sourcegraph/thesrc/app"
 	"github.com/sourcegraph/thesrc/datastore"
+	"github.com/sourcegraph/thesrc/importer"
 	"github.com/sourcegraph/thesrc/router"
 )
 
@@ -79,6 +81,7 @@ type subcmd struct {
 
 var subcmds = []subcmd{
 	{"post", "submit a post", postCmd},
+	{"import", "import posts from other sites", importCmd},
 	{"serve", "start web server", serveCmd},
 	{"createdb", "create the database schema", createDBCmd},
 }
@@ -128,6 +131,69 @@ The options are:
 		log.Fatal(err)
 	}
 	fmt.Println(baseURL.ResolveReference(url))
+}
+
+func importCmd(args []string) {
+	fs := flag.NewFlagSet("import", flag.ExitOnError)
+	hnTop := fs.Bool("hn-top", true, "import news.ycombinator.com/news")
+	hnNewest := fs.Bool("hn-newest", true, "import news.ycombinator.com/newest")
+	hnBest := fs.Bool("hn-best", true, "import from news.ycombinator.com/best")
+	fs.Usage = func() {
+		fmt.Fprintln(os.Stderr, `usage: thesrc import [options]
+
+Imports posts from other sites.
+
+The options are:
+`)
+		fs.PrintDefaults()
+		os.Exit(1)
+	}
+	fs.Parse(args)
+
+	if fs.NArg() != 0 {
+		fs.Usage()
+	}
+
+	n := 0
+	var printMu sync.Mutex
+	importer.Imported = func(site string, post *thesrc.Post) {
+		printMu.Lock()
+		defer printMu.Unlock()
+		fmt.Printf("%-12s  %-50s\n              %-60s\n", site, post.Title, post.LinkURL)
+		n++
+	}
+
+	var fetchers []importer.Fetcher
+	if *hnTop {
+		fetchers = append(fetchers, importer.HackerNewsTop)
+	}
+	if *hnNewest {
+		fetchers = append(fetchers, importer.HackerNewsNewest)
+	}
+	if *hnBest {
+		fetchers = append(fetchers, importer.HackerNewsBest)
+	}
+
+	datastore.Connect()
+	var failed bool
+	var wg sync.WaitGroup
+	for _, f_ := range fetchers {
+		f := f_
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
+			if err := importer.Import(f); err != nil {
+				log.Printf("Error fetching from %s: %s.", f.Site(), err)
+				failed = true
+			}
+		}()
+	}
+	wg.Wait()
+
+	log.Printf("# %d posts imported", n)
+	if failed {
+		os.Exit(1)
+	}
 }
 
 func serveCmd(args []string) {
