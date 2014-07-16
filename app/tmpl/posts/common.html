@@ -5,7 +5,7 @@
 
 {{define "PostContainerInner"}}
 <ul class="post-info">
-  <li class="star"><a href="{{urlTo "post" "ID" (itoa .ID)}}"><span class="score-number">{{.Score}}</span> <span class="icon">&#9733;</span></a></li>
+  <li class="star" title="{{.Classification}}"><a href="{{urlTo "post" "ID" (itoa .ID)}}"><span class="score-number">{{.Score}}</span> <span class="icon">&#9733;</span></a></li>
 </ul>
 <div class="post">
   {{template "Post" .}}
