@@ -138,6 +138,8 @@ func importCmd(args []string) {
 	hnTop := fs.Bool("hn-top", true, "import news.ycombinator.com/news")
 	hnNewest := fs.Bool("hn-newest", true, "import news.ycombinator.com/newest")
 	hnBest := fs.Bool("hn-best", true, "import from news.ycombinator.com/best")
+	lobstersHottest := fs.Bool("lobsters-hottest", true, "import lobste.rs/hottest")
+	lobstersNewest := fs.Bool("lobsters-newest", true, "import lobste.rs/newest")
 	fs.Usage = func() {
 		fmt.Fprintln(os.Stderr, `usage: thesrc import [options]
 
@@ -172,6 +174,12 @@ The options are:
 	}
 	if *hnBest {
 		fetchers = append(fetchers, importer.HackerNewsBest)
+	}
+	if *lobstersHottest {
+		fetchers = append(fetchers, importer.LobstersHottest)
+	}
+	if *lobstersNewest {
+		fetchers = append(fetchers, importer.LobstersNewest)
 	}
 
 	datastore.Connect()
