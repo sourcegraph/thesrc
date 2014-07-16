@@ -1,6 +1,7 @@
 package thesrc
 
 import (
+	"errors"
 	"time"
 
 	"github.com/sourcegraph/thesrc/router"
@@ -35,6 +36,10 @@ type PostsService interface {
 	// List posts.
 	List(opt *PostListOptions) ([]*Post, error)
 }
+
+var (
+	ErrPostNotFound = errors.New("post not found")
+)
 
 type postsService struct{ client *Client }
 

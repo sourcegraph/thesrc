@@ -55,6 +55,24 @@ type ListOptions struct {
 	Page    int `url:",omitempty" json:",omitempty"`
 }
 
+func (o ListOptions) PageOrDefault() int {
+	if o.Page <= 0 {
+		return 1
+	}
+	return o.Page
+}
+
+func (o ListOptions) Offset() int {
+	return (o.PageOrDefault() - 1) * o.PerPageOrDefault()
+}
+
+func (o ListOptions) PerPageOrDefault() int {
+	if o.PerPage <= 0 {
+		return DefaultPerPage
+	}
+	return o.PerPage
+}
+
 // DefaultPerPage is the default number of items to return per page in
 // a paginated result set.
 const DefaultPerPage = 10
