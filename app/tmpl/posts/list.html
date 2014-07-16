@@ -3,11 +3,8 @@
 
 {{define "Main"}}
 <ol class="posts">
-  {{range $i, $post := .Posts}}
-  <li class="post">
-    <a class="post-link" href="{{$post.LinkURL}}">{{$post.Title}}</a>
-    {{if $post.Body}}<p class="post-body">{{$post.Body}}</p>{{end}}
-  </li>
+  {{range .Posts}}
+  <li class="post">{{template "Post" .}}</li>
   {{end}}
 </ol>
 {{end}}

@@ -1,0 +1,4 @@
+{{define "Post"}}
+<header><a class="post-link" href="{{.LinkURL}}">{{.Title}}</a> <span class="domain">({{urlDomain .LinkURL}})</span></header>
+{{if .Body}}<p class="post-body">{{.Body}}</p>{{end}}
+{{end}}

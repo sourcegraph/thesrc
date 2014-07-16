@@ -17,8 +17,8 @@ var (
 
 func LoadTemplates() {
 	err := parseHTMLTemplates([][]string{
-		{"posts/show.html", "common.html", "layout.html"},
-		{"posts/list.html", "common.html", "layout.html"},
+		{"posts/show.html", "posts/common.html", "common.html", "layout.html"},
+		{"posts/list.html", "posts/common.html", "common.html", "layout.html"},
 		{"posts/create_form.html", "common.html", "layout.html"},
 		{"error.html", "common.html", "layout.html"},
 	})
@@ -52,7 +52,8 @@ func parseHTMLTemplates(sets [][]string) error {
 	for _, set := range sets {
 		t := htmpl.New("")
 		t.Funcs(htmpl.FuncMap{
-			"urlTo": urlTo,
+			"urlDomain": urlDomain,
+			"urlTo":     urlTo,
 		})
 
 		_, err := t.ParseFiles(joinTemplateDir(TemplateDir, set)...)

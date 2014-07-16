@@ -99,16 +99,20 @@ li.post {
     margin-bottom: 8px;
     color: #aaa;
 }
-li.post > .post-link {
+li.post .post-link {
     color: #468cbf;
     text-decoration: none;
 }
-li.post > .post-link:hover {
-    color: black;
+li.post .post-link:hover {
+    color: black !important;
     text-decoration: underline;
 }
-li.post > .post-link:visited { color: #777; }
-li.post > .post-body {
+li.post .post-link:visited { color: #777; }
+li.post .domain {
+    color: #888;
+    font-size: 0.75em;
+}
+li.post .post-body {
     margin: 0; padding: 0;
     font-size: 0.85em;
     color: #444;
