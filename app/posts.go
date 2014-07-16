@@ -4,8 +4,8 @@ import (
 	"net/http"
 	"strconv"
 
+	"github.com/gorilla/mux"
 	"github.com/sourcegraph/thesrc"
-	"github.com/sqs/mux"
 )
 
 func servePost(w http.ResponseWriter, r *http.Request) error {

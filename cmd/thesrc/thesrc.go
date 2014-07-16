@@ -7,10 +7,7 @@ import (
 	"net/http"
 	"net/url"
 	"os"
-	"path/filepath"
 	"strconv"
-
-	"go/build"
 
 	"github.com/sourcegraph/thesrc"
 	"github.com/sourcegraph/thesrc/api"
@@ -136,8 +133,8 @@ The options are:
 func serveCmd(args []string) {
 	fs := flag.NewFlagSet("serve", flag.ExitOnError)
 	httpAddr := flag.String("http", ":5000", "HTTP service address")
-	templateDir := fs.String("tmpl-dir", filepath.Join(defaultBase("github.com/sourcegraph/thesrc/app"), "tmpl"), "template directory")
-	staticDir := fs.String("static-dir", filepath.Join(defaultBase("github.com/sourcegraph/thesrc/app"), "static"), "static assets directory")
+	templateDir := fs.String("tmpl-dir", app.TemplateDir, "template directory")
+	staticDir := fs.String("static-dir", app.StaticDir, "static assets directory")
 	reload := flag.Bool("reload", true, "reload templates on each request (dev mode)")
 	fs.Usage = func() {
 		fmt.Fprintln(os.Stderr, `usage: thesrc serve [options] 
@@ -171,14 +168,6 @@ The options are:
 	if err != nil {
 		log.Fatal("ListenAndServe:", err)
 	}
-}
-
-func defaultBase(path string) string {
-	p, err := build.Default.Import(path, "", build.FindOnly)
-	if err != nil {
-		return "."
-	}
-	return p.Dir
 }
 
 func createDBCmd(args []string) {

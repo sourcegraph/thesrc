@@ -5,8 +5,8 @@
 <ol class="posts">
   {{range $i, $post := .Posts}}
   <li>
-    <a href="{{$post.LinkURL}}">{{$post.Title}}</a>
-    {{if $post.Body}}<p>{{$post.Body}}</p>{{end}}
+    <a class="post-link" href="{{$post.LinkURL}}">{{$post.Title}}</a>
+    {{if $post.Body}}<p class="post-body">{{$post.Body}}</p>{{end}}
   </li>
   {{end}}
 </ol>

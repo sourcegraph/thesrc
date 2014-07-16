@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"path/filepath"
 	"runtime/debug"
 
 	"github.com/gorilla/mux"
@@ -19,7 +20,7 @@ var (
 	ReloadTemplates bool
 
 	// StaticDir is the directory containing static assets.
-	StaticDir string
+	StaticDir = filepath.Join(defaultBase("github.com/sourcegraph/thesrc/app"), "static")
 )
 
 var (
