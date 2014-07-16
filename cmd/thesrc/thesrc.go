@@ -8,11 +8,13 @@ import (
 	"net/url"
 	"os"
 	"strconv"
+	"strings"
 	"sync"
 
 	"github.com/sourcegraph/thesrc"
 	"github.com/sourcegraph/thesrc/api"
 	"github.com/sourcegraph/thesrc/app"
+	"github.com/sourcegraph/thesrc/classifier"
 	"github.com/sourcegraph/thesrc/datastore"
 	"github.com/sourcegraph/thesrc/importer"
 	"github.com/sourcegraph/thesrc/router"
@@ -82,6 +84,7 @@ type subcmd struct {
 var subcmds = []subcmd{
 	{"post", "submit a post", postCmd},
 	{"import", "import posts from other sites", importCmd},
+	{"classify", "classify posts", classifyCmd},
 	{"serve", "start web server", serveCmd},
 	{"createdb", "create the database schema", createDBCmd},
 }
@@ -199,6 +202,88 @@ The options are:
 	if failed {
 		os.Exit(1)
 	}
+}
+
+func classifyCmd(args []string) {
+	fs := flag.NewFlagSet("classify", flag.ExitOnError)
+	concurrency := fs.Int("c", 10, "concurrent classifiers")
+	fs.Usage = func() {
+		fmt.Fprintln(os.Stderr, `usage: thesrc classify [options]
+
+Classifies posts.
+
+The options are:
+`)
+		fs.PrintDefaults()
+		os.Exit(1)
+	}
+	fs.Parse(args)
+
+	if fs.NArg() != 0 {
+		fs.Usage()
+	}
+
+	var mu sync.Mutex
+	summary := map[string]int{}
+
+	workChan := make(chan *thesrc.Post)
+	quitChan := make(chan struct{})
+	for i := 0; i < *concurrency; i++ {
+		go func() {
+			for {
+				select {
+				case post := <-workChan:
+					c, err := classifier.Classify(post)
+					if err != nil {
+						log.Printf("Error classifying %q: %s. (Continuing...)", post.LinkURL, err)
+						continue
+					}
+					changed := firstWord(c) != firstWord(post.Classification)
+					if changed {
+						post.Classification = c
+						if _, err := datastore.DBH.Update(post); err != nil {
+							log.Fatal(err)
+						}
+						mu.Lock()
+						summary[firstWord(post.Classification)]++
+						mu.Unlock()
+					}
+					fmt.Printf("%v %-20s %s\n", changed, post.Classification, post.LinkURL)
+				case <-quitChan:
+					return
+				}
+			}
+		}()
+	}
+
+	datastore.Connect()
+	perPage := 100
+	for pg := 1; true; pg++ {
+		log.Println("Fetching more posts...")
+		posts, err := apiclient.Posts.List(&thesrc.PostListOptions{ListOptions: thesrc.ListOptions{PerPage: perPage, Page: pg}})
+		if err != nil {
+			log.Fatal(err)
+		}
+		if len(posts) == 0 {
+			break
+		}
+
+		for _, post := range posts {
+			workChan <- post
+		}
+	}
+
+	close(quitChan)
+
+	fmt.Fprintf(os.Stderr, "# classified posts: %v\n", summary)
+}
+
+func firstWord(s string) string {
+	i := strings.Index(s, " ")
+	if i == -1 {
+		return ""
+	}
+	return s[:i]
 }
 
 func serveCmd(args []string) {

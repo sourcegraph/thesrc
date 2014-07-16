@@ -31,6 +31,9 @@ type Post struct {
 
 	// Score in points.
 	Score int
+
+	// Classification is the output of the classifier on this post.
+	Classification string
 }
 
 // PostsService interacts with the post-related endpoints in thesrc's API.
@@ -75,6 +78,9 @@ func (s *postsService) Get(id int) (*Post, error) {
 }
 
 type PostListOptions struct {
+	// CodeOnly filters the result set to only those posts whose links contain code.
+	CodeOnly bool
+
 	ListOptions
 }
 

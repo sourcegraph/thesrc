@@ -36,8 +36,21 @@ func (s *postsStore) List(opt *thesrc.PostListOptions) ([]*thesrc.Post, error) {
 	if opt == nil {
 		opt = &thesrc.PostListOptions{}
 	}
+
+	sql := `SELECT * FROM post`
+
+	var conds []string
+	if opt.CodeOnly {
+		conds = append(conds, "classification LIKE 'CODE%'")
+	}
+	if len(conds) > 0 {
+		sql += " WHERE (" + strings.Join(conds, ") AND (") + ")"
+	}
+
+	sql += " LIMIT $1 OFFSET $2;"
+
 	var posts []*thesrc.Post
-	err := s.dbh.Select(&posts, `SELECT * FROM post LIMIT $1 OFFSET $2;`, opt.PerPageOrDefault(), opt.Offset())
+	err := s.dbh.Select(&posts, sql, opt.PerPageOrDefault(), opt.Offset())
 	if err != nil {
 		return nil, err
 	}
