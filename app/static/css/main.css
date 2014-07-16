@@ -39,14 +39,10 @@ body > header > h1 > a, body > footer > h1 > a {
 }
 body > header > h1 > a, body > footer > h1 > a { color: #468cbf; }
 body > header a:hover, body > footer a:hover { color: black; }
-body > footer > h1 > a { opacity: 0.65; }
-body > footer > h1 > a:hover { opacity: 1; }
 
 header > h1 > a:hover .name, footer > h1 > a:hover .name {
     text-decoration: underline;
 }
-header > h1 > a .name .the, footer > h1 > a .name .the { opacity: 0.65; }
-header > h1 > a:hover .name .the, footer > h1 > a:hover .name .the { opacity: 1; }
 
 /* nav */
 body > header > h1 { display: inline-block; }
@@ -67,7 +63,7 @@ nav > ul > li > a:hover {
 
 /* main */
 body > section.main {
-    padding: 14px 10px;
+    padding: 10px 10px;
 }
 
 /* submit post form */
@@ -98,56 +94,59 @@ ol.posts {
     margin: 0; padding: 0;
     list-style-type: none;
 }
-li.post {
-    margin-bottom: 8px;
+.post-container {
+    margin: 8px 0;
     color: #aaa;
     clear: both;
 }
-li.post div.post {
-    margin-left: 38px;
+.post-container div.post {
+    margin-left: 48px;
     padding-left: 10px;
 }
-li.post .post-link {
+.post-container .post-link {
     color: #468cbf;
     text-decoration: none;
 }
-li.post .post-link:hover {
+.post-container .post-link:hover {
     color: black !important;
     text-decoration: underline;
 }
-li.post .post-link:visited { color: #777; }
-li.post .domain {
+.post-container .post-link:visited { color: #777; }
+.post-container .domain {
     color: #999;
     font-size: 0.75em;
 }
-li.post .post-body {
+.post-container .post-body {
     margin: 4px 0 0 0;
     font-size: 0.82em;
     color: #666;
     max-width: 600px;
 }
-li.post .post-info, li.post .post-info li { margin: 0; padding: 0; }
-li.post { position: relative; }
-li.post .post-info {
+.post-container .post-info, .post-container .post-info li { margin: 0; padding: 0; }
+.post-container { position: relative; }
+.post-container .post-info {
     float: left;
-    width: 38px;
+    width: 48px;
     text-align: right;
 }
-li.post .post-info li {
+.post-container .post-info li {
     list-style-type: none;
     margin-bottom: 3px;
 }
-li.post .post-info li a {
-    display: inline-block;
+.post-container .post-info li a {
     text-align: center;
-    width: 25px;
     color: #777;
     border-radius: 3px;
     border: solid 1px #e7e7e7;
     background-color: #f3f3f3;
-    padding: 2px;
+    padding: 2px 3px;
     font-size: 0.75em;
     text-decoration: none;
     white-space: nowrap;
     overflow: visible;
+}
+
+/* show post */
+.post-container.showing h1 {
+    
 }

@@ -2,3 +2,12 @@
 <header><a class="post-link" href="{{.LinkURL}}">{{.Title}}</a> <span class="domain">({{urlDomain .LinkURL}})</span></header>
 {{if .Body}}<p class="post-body">{{.Body}}</p>{{end}}
 {{end}}
+
+{{define "PostContainerInner"}}
+<ul class="post-info">
+  <li class="score"><a href="{{urlTo "post" "ID" (itoa .ID)}}">{{.Score}} &#9733;</a></li>
+</ul>
+<div class="post">
+  {{template "Post" .}}
+</div>
+{{end}}

@@ -2,5 +2,7 @@
 {{end}}
 
 {{define "Main"}}
-{{template "Post" .Post}}
+<div class="post-container showing">
+  {{template "PostContainerInner" .Post}}
+</div>
 {{end}}

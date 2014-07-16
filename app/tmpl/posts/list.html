@@ -3,14 +3,9 @@
 
 {{define "Main"}}
 <ol class="posts">
-  {{range $i, $post := .Posts}}
-  <li class="post">
-    <ul class="post-info">
-      <li class="score"><a href="{{urlTo "post" "ID" (itoa .ID)}}">{{.Score}} &#9733;</a></li>
-    </ul>
-    <div class="post">
-      {{template "Post" $post}}
-    </div>
+  {{range .Posts}}
+  <li class="post-container">
+    {{template "PostContainerInner" .}}
   </li>
   {{end}}
 </ol>
