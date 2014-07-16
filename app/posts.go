@@ -35,6 +35,8 @@ func servePosts(w http.ResponseWriter, r *http.Request) error {
 		return err
 	}
 
+	opt.CodeOnly = true
+
 	if opt.PerPage == 0 {
 		opt.PerPage = 60
 	}
