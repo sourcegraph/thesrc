@@ -23,3 +23,9 @@ func NewDatastore(dbh modl.SqlExecutor) *Datastore {
 	d.Posts = &postsStore{d}
 	return d
 }
+
+func NewMockDatastore() *Datastore {
+	return &Datastore{
+		Posts: &thesrc.MockPostsService{},
+	}
+}
