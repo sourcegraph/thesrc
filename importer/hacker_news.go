@@ -8,18 +8,16 @@ import (
 	"github.com/sourcegraph/thesrc"
 )
 
-type hackerNews struct {
-	endpoint string
+func init() {
+	Fetchers = append(Fetchers, &hackerNews{"top"}, &hackerNews{"newest"}, &hackerNews{"best"})
 }
 
-var (
-	HackerNewsTop    Fetcher = &hackerNews{"http://hnify.herokuapp.com/get/top"}
-	HackerNewsNewest Fetcher = &hackerNews{"http://hnify.herokuapp.com/get/newest"}
-	HackerNewsBest   Fetcher = &hackerNews{"http://hnify.herokuapp.com/get/best"}
-)
+type hackerNews struct {
+	which string
+}
 
 func (f *hackerNews) Fetch() ([]*thesrc.Post, error) {
-	resp, err := http.Get(f.endpoint)
+	resp, err := http.Get("http://hnify.herokuapp.com/get/" + f.which)
 	if err != nil {
 		return nil, err
 	}
@@ -52,4 +50,4 @@ func (f *hackerNews) Fetch() ([]*thesrc.Post, error) {
 	return posts, nil
 }
 
-func (f *hackerNews) Site() string { return "hackernews" }
+func (f *hackerNews) Site() string { return "hn/" + f.which }

@@ -141,15 +141,17 @@ The options are:
 
 func importCmd(args []string) {
 	fs := flag.NewFlagSet("import", flag.ExitOnError)
-	hnTop := fs.Bool("hn-top", true, "import news.ycombinator.com/news")
-	hnNewest := fs.Bool("hn-newest", true, "import news.ycombinator.com/newest")
-	hnBest := fs.Bool("hn-best", true, "import from news.ycombinator.com/best")
-	lobstersHottest := fs.Bool("lobsters-hottest", true, "import lobste.rs/hottest")
-	lobstersNewest := fs.Bool("lobsters-newest", true, "import lobste.rs/newest")
 	fs.Usage = func() {
 		fmt.Fprintln(os.Stderr, `usage: thesrc import [options]
 
 Imports posts from other sites.
+
+The available sites are:
+`)
+		for _, f := range importer.Fetchers {
+			fmt.Fprintln(os.Stderr, "  ", f.Site())
+		}
+		fmt.Fprintln(os.Stderr, `
 
 The options are:
 `)
@@ -175,27 +177,10 @@ The options are:
 		numCreated++
 	}
 
-	var fetchers []importer.Fetcher
-	if *hnTop {
-		fetchers = append(fetchers, importer.HackerNewsTop)
-	}
-	if *hnNewest {
-		fetchers = append(fetchers, importer.HackerNewsNewest)
-	}
-	if *hnBest {
-		fetchers = append(fetchers, importer.HackerNewsBest)
-	}
-	if *lobstersHottest {
-		fetchers = append(fetchers, importer.LobstersHottest)
-	}
-	if *lobstersNewest {
-		fetchers = append(fetchers, importer.LobstersNewest)
-	}
-
 	datastore.Connect()
 	var failed bool
 	var wg sync.WaitGroup
-	for _, f_ := range fetchers {
+	for _, f_ := range importer.Fetchers {
 		f := f_
 		wg.Add(1)
 		go func() {

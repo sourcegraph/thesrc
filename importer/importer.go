@@ -5,6 +5,8 @@ import (
 	"github.com/sourcegraph/thesrc/datastore"
 )
 
+var Fetchers = []Fetcher{}
+
 // A Fetcher fetches posts from other sites.
 type Fetcher interface {
 	// Fetch posts.

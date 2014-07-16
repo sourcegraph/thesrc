@@ -8,17 +8,16 @@ import (
 	"github.com/sourcegraph/thesrc"
 )
 
-type lobsters struct {
-	endpoint string
+func init() {
+	Fetchers = append(Fetchers, &lobsters{"hottest"}, &lobsters{"newest"})
 }
 
-var (
-	LobstersHottest Fetcher = &lobsters{"https://lobste.rs/hottest.json"}
-	LobstersNewest  Fetcher = &lobsters{"https://lobste.rs/newest.json"}
-)
+type lobsters struct {
+	which string
+}
 
 func (f *lobsters) Fetch() ([]*thesrc.Post, error) {
-	resp, err := http.Get(f.endpoint)
+	resp, err := http.Get(fmt.Sprintf("https://lobste.rs/%s.json", f.which))
 	if err != nil {
 		return nil, err
 	}
@@ -49,4 +48,4 @@ func (f *lobsters) Fetch() ([]*thesrc.Post, error) {
 	return posts, nil
 }
 
-func (f *lobsters) Site() string { return "lobsters" }
+func (f *lobsters) Site() string { return "lobsters/" + f.which }
