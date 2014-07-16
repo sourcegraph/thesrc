@@ -35,6 +35,10 @@ func servePosts(w http.ResponseWriter, r *http.Request) error {
 		return err
 	}
 
+	if opt.PerPage == 0 {
+		opt.PerPage = 60
+	}
+
 	posts, err := apiclient.Posts.List(&opt)
 	if err != nil {
 		return err
