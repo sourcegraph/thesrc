@@ -125,7 +125,6 @@ ol.posts {
     max-width: 600px;
 }
 .post-container .post-info, .post-container .post-info li { margin: 0; padding: 0; }
-.post-container { position: relative; }
 .post-container .post-info {
     float: left;
     width: 48px;
@@ -135,8 +134,11 @@ ol.posts {
     list-style-type: none;
     margin-bottom: 3px;
 }
+/* only show score on hover */
 .post-container .post-info li a {
-    text-align: center;
+    display: inline-block;
+    width: 43px;
+    text-align: right;
     color: #777;
     border-radius: 3px;
     border: solid 1px #e7e7e7;
@@ -146,6 +148,18 @@ ol.posts {
     text-decoration: none;
     white-space: nowrap;
     overflow: visible;
+}
+.post-container .post-info li a .score-number {
+    opacity: 0;
+}
+.post-container .post-info li a:hover .score-number {
+    opacity: 1;
+    -webkit-transition: opacity 1.5s ease-in;
+}
+.post-container .post-info li a:hover {
+    border: solid 1px #b8d7ee;
+    background-color: #468cbf;
+    color: white;
 }
 
 /* show post */
