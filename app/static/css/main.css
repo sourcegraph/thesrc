@@ -1,0 +1,53 @@
+body {
+    font-family: Noto Sans;
+    margin: 0; padding: 0;
+}
+
+/* common */
+.thesrc.brand .name {
+    font-family: 'monaco', 'consolas', monospace;
+}
+
+a.thesrc.brand {
+    text-decoration: none;
+}
+
+/* header and footer */
+body > header, body > footer {
+    margin: 0; padding: 0;
+}
+
+body > header {
+    background-color: #4e9bd4;
+    color: white;
+}
+body > footer {
+    color: #4e9bd4;
+    background-color: white;
+    border-top: solid 1px #4e9bd4;
+}
+
+body > header > h1, body > footer > h1 { margin: 0; padding: 0; }
+body > header > h1 { font-size: 1.4em; }
+body > footer > h1 { font-size: 1.0em; }
+
+body > header > h1 > a, body > footer > h1 > a {
+    display: inline-block;
+    padding: 7px 10px;
+}
+body > header > h1 > a { color: white; }
+body > footer > h1 > a {
+    color: #4e9bd4;
+    opacity: 0.65;
+}
+body > footer > h1 > a:hover { opacity: 1; }
+
+header > h1 > a:hover .name, footer > h1 > a:hover .name {
+    text-decoration: underline;
+}
+
+
+/* main */
+body > section.main {
+    padding: 7px 10px;
+}
