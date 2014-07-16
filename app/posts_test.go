@@ -1,8 +1,12 @@
 package app
 
 import (
+	"bytes"
 	"net/http"
+	"net/http/httptest"
+	"net/url"
 	"strconv"
+	"strings"
 	"testing"
 
 	"github.com/sourcegraph/thesrc"
@@ -91,5 +95,80 @@ func TestPosts(t *testing.T) {
 		if body.Text() != post.Body {
 			t.Errorf("got post body %q, want %q", body.Text(), post.Body)
 		}
+	}
+}
+
+func TestCreatePostForm(t *testing.T) {
+	setup()
+	defer teardown()
+
+	want := &thesrc.Post{
+		Title:   "t",
+		LinkURL: "http://example.com",
+		Body:    "b",
+	}
+
+	url_, _ := router.App().Get(router.CreatePostForm).URL()
+	url_.RawQuery = url.Values{"Title": []string{want.Title}, "url": []string{want.LinkURL}, "body": []string{want.Body}}.Encode()
+	html, resp := getHTML(t, url_)
+
+	if want := http.StatusOK; resp.Code != want {
+		t.Errorf("got HTTP status %d, want %d", resp.Code, want)
+	}
+
+	if got, _ := html.Find("input[name=Title]").Attr("value"); got != want.Title {
+		t.Errorf("got title %q, want %q", got, want.Title)
+	}
+	if got, _ := html.Find("input[name=LinkURL]").Attr("value"); got != want.LinkURL {
+		t.Errorf("got link href %q, want %q", got, want.LinkURL)
+	}
+	if body := html.Find("textarea[name=Body]").Text(); body != want.Body {
+		t.Errorf("got post body %q, want %q", body, want.Body)
+	}
+}
+
+func TestCreatePosts(t *testing.T) {
+	setup()
+	defer teardown()
+
+	post := &thesrc.Post{ID: 0, Title: "t", LinkURL: "http://example.com", Body: "b"}
+
+	var called bool
+	apiclient = &thesrc.Client{
+		Posts: &thesrc.MockPostsService{
+			Create_: func(post *thesrc.Post) error {
+				called = true
+				post.ID = 1
+				return nil
+			},
+		},
+	}
+
+	v := url.Values{
+		"Title":   []string{post.Title},
+		"LinkURL": []string{post.LinkURL},
+		"Body":    []string{post.Body},
+	}
+
+	url, _ := router.App().Get(router.CreatePost).URL()
+	req, err := http.NewRequest("POST", url.String(), strings.NewReader(v.Encode()))
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	resp := httptest.NewRecorder()
+	resp.Body = new(bytes.Buffer)
+	testMux.ServeHTTP(resp, req)
+
+	if want := http.StatusSeeOther; resp.Code != want {
+		t.Errorf("got HTTP status %d, want %d", resp.Code, want)
+	}
+
+	if !called {
+		t.Error("!called")
+	}
+
+	if loc, want := resp.Header().Get("location"), urlTo(router.Post, "ID", "1").String(); loc != want {
+		t.Errorf("got Location %q, want %q", loc, want)
 	}
 }

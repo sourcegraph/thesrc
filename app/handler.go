@@ -26,14 +26,17 @@ var (
 var (
 	apiclient     = thesrc.NewClient(nil)
 	schemaDecoder = schema.NewDecoder()
+	appRouter     = router.App()
 )
 
 func Handler() *mux.Router {
-	m := router.App()
+	m := appRouter
 	m.PathPrefix("/static/").Handler(http.StripPrefix("/static/", http.FileServer(http.Dir(StaticDir))))
 	// TODO(sqs): add handlers for /favicon.ico and /robots.txt
 	m.Get(router.Post).Handler(handler(servePost))
 	m.Get(router.Posts).Handler(handler(servePosts))
+	m.Get(router.CreatePostForm).Handler(handler(serveCreatePostForm))
+	m.Get(router.CreatePost).Handler(handler(serveCreatePost))
 	return m
 }
 

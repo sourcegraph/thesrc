@@ -19,6 +19,7 @@ func LoadTemplates() {
 	err := parseHTMLTemplates([][]string{
 		{"posts/show.html", "common.html", "layout.html"},
 		{"posts/list.html", "common.html", "layout.html"},
+		{"posts/create_form.html", "common.html", "layout.html"},
 		{"error.html", "common.html", "layout.html"},
 	})
 	if err != nil {
@@ -50,7 +51,9 @@ var templates = map[string]*htmpl.Template{}
 func parseHTMLTemplates(sets [][]string) error {
 	for _, set := range sets {
 		t := htmpl.New("")
-		t.Funcs(htmpl.FuncMap{})
+		t.Funcs(htmpl.FuncMap{
+			"urlTo": urlTo,
+		})
 
 		_, err := t.ParseFiles(joinTemplateDir(TemplateDir, set)...)
 		if err != nil {
@@ -72,4 +75,17 @@ func joinTemplateDir(base string, files []string) []string {
 		result[i] = filepath.Join(base, files[i])
 	}
 	return result
+}
+
+func urlTo(routeName string, params ...string) *url.URL {
+	route := appRouter.Get(routeName)
+	if route == nil {
+		log.Panicf("no such route: %q (params: %v)", routeName, params)
+	}
+	u, err := route.URLPath(params...)
+	if err != nil {
+		log.Printf("Route error: failed to make URL for route %q (params: %v): %s", routeName, params, err)
+		return &url.URL{}
+	}
+	return u
 }

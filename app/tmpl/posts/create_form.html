@@ -1,0 +1,18 @@
+{{define "Head"}}<title>Submit Post - thesrc</title>
+{{end}}
+
+{{define "Main"}}
+<form action="{{urlTo "post:create"}}" method="post" class="create-post">
+  <dl>
+    <dt><label for="Title">Title</label></dt>
+    <dd><input id="Title" name="Title" type="text" size="80" maxlength="80" value="{{.Post.Title}}" tabindex="1"></dd>
+
+    <dt><label for="LinkURL">Link URL</label></dt>
+    <dd><input id="LinkURL" name="LinkURL" type="url" size="80" maxlength="255" value="{{.Post.LinkURL}}" tabindex="2"></dd>
+
+    <dt><label for="Body">Body</label></dt>
+    <dd><textarea id="Body" name="Body" rows="4" cols="80" maxlength="140" tabindex="3">{{.Post.Body}}</textarea></dd>
+  </dl>
+  <button type="submit" tabindex="4">Submit Post</button>
+</form>
+{{end}}
