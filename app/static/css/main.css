@@ -97,6 +97,7 @@ form.create-post button {
 /* posts */
 li.post {
     margin-bottom: 8px;
+    color: #aaa;
 }
 li.post > .post-link {
     color: #468cbf;
