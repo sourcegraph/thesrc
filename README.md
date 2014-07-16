@@ -1,5 +1,15 @@
 # thesrc [![Build Status](https://travis-ci.org/sourcegraph/thesrc.png?branch=master)](https://travis-ci.org/sourcegraph/thesrc)
 
+thesrc is a news site for programmers that's intended to be an example of how to
+structure a large Go web app. While this app is not large itself, it
+demonstrates the same patterns in the web app that powers
+[Sourcegraph.com](https://sourcegraph.com).
+
+thesrc has a few special features of interest to programmers:
+
+* just the good stuff: an automated classifier rejects links that don't contain code or involve programming;
+* not a popularity contest: you can only see a link's score by mousing over it for a couple of seconds, and (TODO) freshly posted links are randomly rotated into the homepage;
+
 ## Installation
 
 Use the `thesrc` command to interact with the app.
