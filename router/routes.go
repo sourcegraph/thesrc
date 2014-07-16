@@ -1,5 +1,6 @@
 package router
 
 const (
-	Post = "post"
+	Post  = "post"
+	Posts = "posts"
 )

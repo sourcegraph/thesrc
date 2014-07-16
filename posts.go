@@ -31,6 +31,9 @@ type Post struct {
 type PostsService interface {
 	// Get a post.
 	Get(id string) (*Post, error)
+
+	// List posts.
+	List(opt *PostListOptions) ([]*Post, error)
 }
 
 type postsService struct{ client *Client }
@@ -55,8 +58,33 @@ func (s *postsService) Get(id string) (*Post, error) {
 	return post, nil
 }
 
+type PostListOptions struct {
+	ListOptions
+}
+
+func (s *postsService) List(opt *PostListOptions) ([]*Post, error) {
+	url, err := s.client.url(router.Posts, nil, opt)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := s.client.NewRequest("GET", url.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	var posts []*Post
+	_, err = s.client.Do(req, &posts)
+	if err != nil {
+		return nil, err
+	}
+
+	return posts, nil
+}
+
 type MockPostsService struct {
-	Get_ func(id string) (*Post, error)
+	Get_  func(id string) (*Post, error)
+	List_ func(opt *PostListOptions) ([]*Post, error)
 }
 
 func (s *MockPostsService) Get(id string) (*Post, error) {
@@ -64,4 +92,11 @@ func (s *MockPostsService) Get(id string) (*Post, error) {
 		return nil, nil
 	}
 	return s.Get_(id)
+}
+
+func (s *MockPostsService) List(opt *PostListOptions) ([]*Post, error) {
+	if s.List_ == nil {
+		return nil, nil
+	}
+	return s.List_(opt)
 }

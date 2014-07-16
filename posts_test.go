@@ -36,3 +36,35 @@ func TestPostsService_Get(t *testing.T) {
 		t.Errorf("Posts.Get returned %+v, want %+v", post, want)
 	}
 }
+
+func TestPostsService_List(t *testing.T) {
+	setup()
+	defer teardown()
+
+	want := []*Post{{ID: "a"}}
+
+	var called bool
+	mux.HandleFunc(urlPath(t, router.Posts, nil), func(w http.ResponseWriter, r *http.Request) {
+		called = true
+		testMethod(t, r, "GET")
+		testFormValues(t, r, values{})
+
+		writeJSON(w, want)
+	})
+
+	posts, err := client.Posts.List(nil)
+	if err != nil {
+		t.Errorf("Posts.List returned error: %v", err)
+	}
+
+	if !called {
+		t.Fatal("!called")
+	}
+
+	for _, p := range want {
+		normalizeTime(&p.SubmittedAt)
+	}
+	if !reflect.DeepEqual(posts, want) {
+		t.Errorf("Posts.List returned %+v, want %+v", posts, want)
+	}
+}

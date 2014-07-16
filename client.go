@@ -48,6 +48,17 @@ func NewClient(httpClient *http.Client) *Client {
 	return c
 }
 
+// ListOptions specifies general pagination options for fetching a list of
+// results.
+type ListOptions struct {
+	PerPage int `url:",omitempty" json:",omitempty"`
+	Page    int `url:",omitempty" json:",omitempty"`
+}
+
+// DefaultPerPage is the default number of items to return per page in
+// a paginated result set.
+const DefaultPerPage = 10
+
 // apiRouter is used to generate URLs for thesrc's HTTP API.
 var apiRouter = router.API()
 
