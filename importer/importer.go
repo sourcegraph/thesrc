@@ -25,15 +25,16 @@ func Import(f Fetcher) error {
 	}
 
 	for _, post := range posts {
-		if err := store.Posts.Create(post); err != nil {
+		created, err := store.Posts.Submit(post)
+		if err != nil {
 			return err
 		}
 		if Imported != nil {
-			Imported(f.Site(), post)
+			Imported(f.Site(), post, created)
 		}
 	}
 	return nil
 }
 
 // Imported (if non-nil) is called each time a post is successfully imported.
-var Imported func(site string, post *thesrc.Post)
+var Imported func(site string, post *thesrc.Post, created bool)

@@ -19,7 +19,7 @@ var (
 func Handler() *mux.Router {
 	m := router.API()
 	m.Get(router.Post).Handler(handler(servePost))
-	m.Get(router.CreatePost).Handler(handler(serveCreatePost))
+	m.Get(router.SubmitPost).Handler(handler(serveSubmitPost))
 	m.Get(router.Posts).Handler(handler(servePosts))
 	return m
 }

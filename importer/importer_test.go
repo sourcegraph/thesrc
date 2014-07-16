@@ -18,21 +18,21 @@ func (f *mockFetcher) Site() string                   { return "mock" }
 func TestImport(t *testing.T) {
 	want := &thesrc.Post{Title: "t"}
 
-	var createCalled bool
+	var submitCalled bool
 	store = &datastore.Datastore{
 		Posts: &thesrc.MockPostsService{
-			Create_: func(post *thesrc.Post) error {
+			Submit_: func(post *thesrc.Post) (bool, error) {
 				if post.Title != want.Title {
 					t.Errorf("got title %q, want %q", post.Title, want.Title)
 				}
-				createCalled = true
-				return nil
+				submitCalled = true
+				return true, nil
 			},
 		},
 	}
 
 	var imported int
-	Imported = func(site string, post *thesrc.Post) {
+	Imported = func(site string, post *thesrc.Post, created bool) {
 		imported++
 	}
 
@@ -41,8 +41,8 @@ func TestImport(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	if !createCalled {
-		t.Error("!createCalled")
+	if !submitCalled {
+		t.Error("!submitCalled")
 	}
 
 	if want := 1; imported != want {

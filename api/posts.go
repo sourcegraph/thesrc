@@ -23,15 +23,19 @@ func servePost(w http.ResponseWriter, r *http.Request) error {
 	return writeJSON(w, post)
 }
 
-func serveCreatePost(w http.ResponseWriter, r *http.Request) error {
+func serveSubmitPost(w http.ResponseWriter, r *http.Request) error {
 	var post thesrc.Post
 	err := json.NewDecoder(r.Body).Decode(&post)
 	if err != nil {
 		return err
 	}
 
-	if err := store.Posts.Create(&post); err != nil {
+	created, err := store.Posts.Submit(&post)
+	if err != nil {
 		return err
+	}
+	if created {
+		w.WriteHeader(http.StatusCreated)
 	}
 
 	return writeJSON(w, post)

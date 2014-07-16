@@ -69,25 +69,30 @@ func TestPostsService_List(t *testing.T) {
 	}
 }
 
-func TestPostsService_Create(t *testing.T) {
+func TestPostsService_Submit_new(t *testing.T) {
 	setup()
 	defer teardown()
 
 	want := &Post{Title: "t"}
 
 	var called bool
-	mux.HandleFunc(urlPath(t, router.CreatePost, nil), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(urlPath(t, router.SubmitPost, nil), func(w http.ResponseWriter, r *http.Request) {
 		called = true
 		testMethod(t, r, "POST")
 		testBody(t, r, `{"Title":"t","LinkURL":"","Body":"","SubmittedAt":"0001-01-01T00:00:00Z","AuthorUserID":0,"Score":0}`+"\n")
 
+		w.WriteHeader(http.StatusCreated)
 		writeJSON(w, want)
 	})
 
 	post := &Post{Title: "t"}
-	err := client.Posts.Create(post)
+	created, err := client.Posts.Submit(post)
 	if err != nil {
-		t.Errorf("Posts.Create returned error: %v", err)
+		t.Errorf("Posts.Submit returned error: %v", err)
+	}
+
+	if !created {
+		t.Error("!created")
 	}
 
 	if !called {
@@ -96,6 +101,41 @@ func TestPostsService_Create(t *testing.T) {
 
 	normalizeTime(&want.SubmittedAt)
 	if !reflect.DeepEqual(post, want) {
-		t.Errorf("Posts.Create returned %+v, want %+v", post, want)
+		t.Errorf("Posts.Submit returned %+v, want %+v", post, want)
+	}
+}
+
+func TestPostsService_Submit_existing(t *testing.T) {
+	setup()
+	defer teardown()
+
+	want := &Post{Title: "t"}
+
+	var called bool
+	mux.HandleFunc(urlPath(t, router.SubmitPost, nil), func(w http.ResponseWriter, r *http.Request) {
+		called = true
+		testMethod(t, r, "POST")
+		testBody(t, r, `{"Title":"t","LinkURL":"","Body":"","SubmittedAt":"0001-01-01T00:00:00Z","AuthorUserID":0,"Score":0}`+"\n")
+
+		writeJSON(w, want)
+	})
+
+	post := &Post{Title: "t"}
+	created, err := client.Posts.Submit(post)
+	if err != nil {
+		t.Errorf("Posts.Submit returned error: %v", err)
+	}
+
+	if created {
+		t.Error("created")
+	}
+
+	if !called {
+		t.Fatal("!called")
+	}
+
+	normalizeTime(&want.SubmittedAt)
+	if !reflect.DeepEqual(post, want) {
+		t.Errorf("Posts.Submit returned %+v, want %+v", post, want)
 	}
 }

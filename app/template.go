@@ -20,7 +20,7 @@ func LoadTemplates() {
 	err := parseHTMLTemplates([][]string{
 		{"posts/show.html", "posts/common.html", "common.html", "layout.html"},
 		{"posts/list.html", "posts/common.html", "common.html", "layout.html"},
-		{"posts/create_form.html", "common.html", "layout.html"},
+		{"posts/submit_form.html", "common.html", "layout.html"},
 		{"error.html", "common.html", "layout.html"},
 	})
 	if err != nil {

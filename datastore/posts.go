@@ -1,11 +1,20 @@
 package datastore
 
-import "github.com/sourcegraph/thesrc"
+import (
+	"fmt"
+	"math/rand"
+	"strings"
+	"time"
+
+	"github.com/jmoiron/modl"
+	"github.com/sourcegraph/thesrc"
+)
 
 func init() {
 	DB.AddTableWithName(thesrc.Post{}, "post").SetKeys(true, "ID")
 	createSQL = append(createSQL,
 		`CREATE INDEX post_submittedat ON post(submittedat DESC);`,
+		`CREATE UNIQUE INDEX post_linkurl ON post(linkurl);`,
 	)
 
 }
@@ -35,6 +44,42 @@ func (s *postsStore) List(opt *thesrc.PostListOptions) ([]*thesrc.Post, error) {
 	return posts, nil
 }
 
-func (s *postsStore) Create(post *thesrc.Post) error {
-	return s.dbh.Insert(post)
+func (s *postsStore) Submit(post *thesrc.Post) (bool, error) {
+	retries := 3
+	var wantRetry bool
+
+retry:
+	retries--
+	wantRetry = false
+	if retries == 0 {
+		return false, fmt.Errorf("failed to submit post with URL %q after retrying", post.LinkURL)
+	}
+
+	var created bool
+	err := transact(s.dbh, func(tx modl.SqlExecutor) error {
+		var existing []*thesrc.Post
+		if err := tx.Select(&existing, `SELECT * FROM post WHERE linkurl=$1 LIMIT 1;`, post.LinkURL); err != nil {
+			return err
+		}
+		if len(existing) > 0 {
+			*post = *existing[0]
+			return nil
+		}
+
+		if err := tx.Insert(post); err != nil {
+			if strings.Contains(err.Error(), `violates unique constraint "post_linkurl"`) {
+				time.Sleep(time.Duration(rand.Intn(75)) * time.Millisecond)
+				wantRetry = true
+				return err
+			}
+			return err
+		}
+
+		created = true
+		return nil
+	})
+	if wantRetry {
+		goto retry
+	}
+	return created, err
 }

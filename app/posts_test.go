@@ -98,7 +98,7 @@ func TestPosts(t *testing.T) {
 	}
 }
 
-func TestCreatePostForm(t *testing.T) {
+func TestSubmitPostForm(t *testing.T) {
 	setup()
 	defer teardown()
 
@@ -108,7 +108,7 @@ func TestCreatePostForm(t *testing.T) {
 		Body:    "b",
 	}
 
-	url_, _ := router.App().Get(router.CreatePostForm).URL()
+	url_, _ := router.App().Get(router.SubmitPostForm).URL()
 	url_.RawQuery = url.Values{"Title": []string{want.Title}, "url": []string{want.LinkURL}, "body": []string{want.Body}}.Encode()
 	html, resp := getHTML(t, url_)
 
@@ -127,7 +127,7 @@ func TestCreatePostForm(t *testing.T) {
 	}
 }
 
-func TestCreatePosts(t *testing.T) {
+func TestSubmitPosts(t *testing.T) {
 	setup()
 	defer teardown()
 
@@ -136,10 +136,10 @@ func TestCreatePosts(t *testing.T) {
 	var called bool
 	apiclient = &thesrc.Client{
 		Posts: &thesrc.MockPostsService{
-			Create_: func(post *thesrc.Post) error {
+			Submit_: func(post *thesrc.Post) (bool, error) {
 				called = true
 				post.ID = 1
-				return nil
+				return true, nil
 			},
 		},
 	}
@@ -150,7 +150,7 @@ func TestCreatePosts(t *testing.T) {
 		"Body":    []string{post.Body},
 	}
 
-	url, _ := router.App().Get(router.CreatePost).URL()
+	url, _ := router.App().Get(router.SubmitPost).URL()
 	req, err := http.NewRequest("POST", url.String(), strings.NewReader(v.Encode()))
 	if err != nil {
 		t.Fatal(err)

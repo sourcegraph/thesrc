@@ -35,8 +35,8 @@ func Handler() *mux.Router {
 	// TODO(sqs): add handlers for /favicon.ico and /robots.txt
 	m.Get(router.Post).Handler(handler(servePost))
 	m.Get(router.Posts).Handler(handler(servePosts))
-	m.Get(router.CreatePostForm).Handler(handler(serveCreatePostForm))
-	m.Get(router.CreatePost).Handler(handler(serveCreatePost))
+	m.Get(router.SubmitPostForm).Handler(handler(serveSubmitPostForm))
+	m.Get(router.SubmitPost).Handler(handler(serveSubmitPost))
 	return m
 }
 

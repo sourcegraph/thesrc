@@ -2,6 +2,7 @@ package thesrc
 
 import (
 	"errors"
+	"net/http"
 	"strconv"
 	"time"
 
@@ -40,8 +41,11 @@ type PostsService interface {
 	// List posts.
 	List(opt *PostListOptions) ([]*Post, error)
 
-	// Create a new post. The newly created post's ID is written to post.ID.
-	Create(post *Post) error
+	// Submit a post. If this post's link URL has never been submitted, post.ID
+	// will be a new ID, and created will be true. If it has been submitted
+	// before, post.ID will be the ID of the previous post, and created will be
+	// false.
+	Submit(post *Post) (created bool, err error)
 }
 
 var (
@@ -94,29 +98,29 @@ func (s *postsService) List(opt *PostListOptions) ([]*Post, error) {
 	return posts, nil
 }
 
-func (s *postsService) Create(post *Post) error {
-	url, err := s.client.url(router.CreatePost, nil, nil)
+func (s *postsService) Submit(post *Post) (bool, error) {
+	url, err := s.client.url(router.SubmitPost, nil, nil)
 	if err != nil {
-		return err
+		return false, err
 	}
 
 	req, err := s.client.NewRequest("POST", url.String(), post)
 	if err != nil {
-		return err
+		return false, err
 	}
 
-	_, err = s.client.Do(req, &post)
+	resp, err := s.client.Do(req, &post)
 	if err != nil {
-		return err
+		return false, err
 	}
 
-	return nil
+	return resp.StatusCode == http.StatusCreated, nil
 }
 
 type MockPostsService struct {
 	Get_    func(id int) (*Post, error)
 	List_   func(opt *PostListOptions) ([]*Post, error)
-	Create_ func(post *Post) error
+	Submit_ func(post *Post) (bool, error)
 }
 
 var _ PostsService = &MockPostsService{}
@@ -135,9 +139,9 @@ func (s *MockPostsService) List(opt *PostListOptions) ([]*Post, error) {
 	return s.List_(opt)
 }
 
-func (s *MockPostsService) Create(post *Post) error {
-	if s.Create_ == nil {
-		return nil
+func (s *MockPostsService) Submit(post *Post) (bool, error) {
+	if s.Submit_ == nil {
+		return false, nil
 	}
-	return s.Create_(post)
+	return s.Submit_(post)
 }

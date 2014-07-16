@@ -121,9 +121,15 @@ The options are:
 		LinkURL: *linkURL,
 		Body:    *body,
 	}
-	err := apiclient.Posts.Create(post)
+	created, err := apiclient.Posts.Submit(post)
 	if err != nil {
 		log.Fatal(err)
+	}
+
+	if created {
+		fmt.Print("created: ")
+	} else {
+		fmt.Print("exists:  ")
 	}
 
 	url, err := router.App().Get(router.Post).URL("ID", strconv.Itoa(post.ID))
@@ -156,13 +162,17 @@ The options are:
 		fs.Usage()
 	}
 
-	n := 0
-	var printMu sync.Mutex
-	importer.Imported = func(site string, post *thesrc.Post) {
-		printMu.Lock()
-		defer printMu.Unlock()
+	var numTotal, numCreated int
+	var mu sync.Mutex
+	importer.Imported = func(site string, post *thesrc.Post, created bool) {
+		mu.Lock()
+		defer mu.Unlock()
+		numTotal++
+		if !created {
+			return
+		}
 		fmt.Printf("%-12s  %-50s\n              %-60s\n", site, post.Title, post.LinkURL)
-		n++
+		numCreated++
 	}
 
 	var fetchers []importer.Fetcher
@@ -192,13 +202,15 @@ The options are:
 			defer wg.Done()
 			if err := importer.Import(f); err != nil {
 				log.Printf("Error fetching from %s: %s.", f.Site(), err)
+				mu.Lock()
 				failed = true
+				mu.Unlock()
 			}
 		}()
 	}
 	wg.Wait()
 
-	log.Printf("# %d posts imported", n)
+	log.Printf("# import: %d new posts, %d already existed", numCreated, numTotal-numCreated)
 	if failed {
 		os.Exit(1)
 	}

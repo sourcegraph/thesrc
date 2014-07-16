@@ -2,7 +2,7 @@
 {{end}}
 
 {{define "Main"}}
-<form action="{{urlTo "post:create"}}" method="post" class="create-post">
+<form action="{{urlTo "post:submit"}}" method="post" class="submit-post">
   <dl>
     <dt><label for="Title">Title</label></dt>
     <dd><input id="Title" name="Title" type="text" size="80" maxlength="80" value="{{.Post.Title}}" tabindex="1"></dd>

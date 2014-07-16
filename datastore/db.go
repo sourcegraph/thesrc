@@ -51,3 +51,35 @@ func Drop() {
 	// TODO(sqs): raise errors?
 	DB.DropTables()
 }
+
+// transact calls fn in a DB transaction. If dbh is a transaction, then it just
+// calls the function. Otherwise, it begins a transaction, rolling back on
+// failure and committing on success.
+func transact(dbh modl.SqlExecutor, fn func(dbh modl.SqlExecutor) error) error {
+	var sharedTx bool
+	tx, sharedTx := dbh.(*modl.Transaction)
+	if !sharedTx {
+		var err error
+		tx, err = dbh.(*modl.DbMap).Begin()
+		if err != nil {
+			return err
+		}
+		defer func() {
+			if err != nil {
+				tx.Rollback()
+			}
+		}()
+	}
+
+	if err := fn(tx); err != nil {
+		return err
+	}
+
+	if !sharedTx {
+		if err := tx.Commit(); err != nil {
+			return err
+		}
+	}
+
+	return nil
+}

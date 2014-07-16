@@ -70,27 +70,26 @@ body > section.main {
     padding: 14px 10px;
 }
 
-/* create post form */
-
-form.create-post dl { margin: 0; padding: 0; }
-form.create-post dt {
+/* submit post form */
+form.submit-post dl { margin: 0; padding: 0; }
+form.submit-post dt {
     
 }
-form.create-post dt label {
+form.submit-post dt label {
     font-weight: bold;
     font-size: 0.9em;
 }
-form.create-post dd {
+form.submit-post dd {
     margin: 0 0 12px 0;
 }
-form.create-post textarea {
+form.submit-post textarea {
     font-family: "Helvetica Neue", "Helvetica", "Arial", sans-serif;
 }
-form.create-post textarea, form.create-post input {
+form.submit-post textarea, form.submit-post input {
     width: 44em;
     max-width: 95%;
 }
-form.create-post button {
+form.submit-post button {
     font-size: 1.1em;
 }
 

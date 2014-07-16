@@ -47,7 +47,7 @@ func servePosts(w http.ResponseWriter, r *http.Request) error {
 	})
 }
 
-func serveCreatePostForm(w http.ResponseWriter, r *http.Request) error {
+func serveSubmitPostForm(w http.ResponseWriter, r *http.Request) error {
 	// Populate form from querystring.
 	q := r.URL.Query()
 	post := &thesrc.Post{
@@ -56,14 +56,14 @@ func serveCreatePostForm(w http.ResponseWriter, r *http.Request) error {
 		Body:    getCaseOrLowerCaseQuery(q, "Body"),
 	}
 
-	return renderTemplate(w, r, "posts/create_form.html", http.StatusOK, struct {
+	return renderTemplate(w, r, "posts/submit_form.html", http.StatusOK, struct {
 		Post *thesrc.Post
 	}{
 		Post: post,
 	})
 }
 
-func serveCreatePost(w http.ResponseWriter, r *http.Request) error {
+func serveSubmitPost(w http.ResponseWriter, r *http.Request) error {
 	if err := r.ParseForm(); err != nil {
 		return err
 	}
@@ -73,7 +73,7 @@ func serveCreatePost(w http.ResponseWriter, r *http.Request) error {
 		return err
 	}
 
-	if err := apiclient.Posts.Create(&post); err != nil {
+	if _, err := apiclient.Posts.Submit(&post); err != nil {
 		return err
 	}
 
