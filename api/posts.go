@@ -2,8 +2,12 @@ package api
 
 import (
 	"encoding/json"
+	"errors"
+	"net"
 	"net/http"
+	"net/url"
 	"strconv"
+	"strings"
 
 	"github.com/gorilla/mux"
 	"github.com/sourcegraph/thesrc"
@@ -28,6 +32,24 @@ func serveSubmitPost(w http.ResponseWriter, r *http.Request) error {
 	err := json.NewDecoder(r.Body).Decode(&post)
 	if err != nil {
 		return err
+	}
+
+	if post.LinkURL != "" {
+		linkURL, err := url.Parse(post.LinkURL)
+		if err != nil {
+			return err
+		}
+		if linkURL.Scheme != "http" && linkURL.Scheme != "https" {
+			return errors.New("link URL scheme must be http or https")
+		}
+		if host, port, err := net.SplitHostPort(linkURL.Host); err != nil {
+			return err
+		} else if port != "" {
+			return errors.New("non-standard link URL port is not allowed")
+		} else if !strings.Contains(host, ".") {
+			return errors.New("invalid hostname (must contain dot)")
+		}
+		// TODO(sqs): check for IP addresses or localhost aliases
 	}
 
 	created, err := store.Posts.Submit(&post)
