@@ -2,6 +2,7 @@ package datastore
 
 import (
 	"log"
+	"os"
 	"sync"
 
 	"github.com/jmoiron/modl"
@@ -23,6 +24,8 @@ var connectOnce sync.Once
 // variables. It calls log.Fatal if it encounters an error.
 func Connect() {
 	connectOnce.Do(func() {
+		setDBCredentialsFromRDSEnv()
+
 		var err error
 		DB.Dbx, err = sqlx.Open("postgres", "")
 		if err != nil {
@@ -82,4 +85,21 @@ func transact(dbh modl.SqlExecutor, fn func(dbh modl.SqlExecutor) error) error {
 	}
 
 	return nil
+}
+
+// setDBCredentialsFromRDSEnv copies RDS env vars (RDS_*) to PostgreSQL env vars
+// (PG*) for use when deploying to AWS.
+func setDBCredentialsFromRDSEnv() {
+	m := map[string]string{
+		"PGUSER":     "RDS_USERNAME",
+		"PGPASSWORD": "RDS_PASSWORD",
+		"PGDATABASE": "RDS_DB_NAME",
+		"PGHOST":     "RDS_HOSTNAME",
+		"PGPORT":     "RDS_PORT",
+	}
+	for pgName, rdsName := range m {
+		if err := os.Setenv(pgName, os.Getenv(rdsName)); err != nil {
+			log.Fatal(err)
+		}
+	}
 }
