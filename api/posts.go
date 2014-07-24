@@ -43,7 +43,9 @@ func serveSubmitPost(w http.ResponseWriter, r *http.Request) error {
 			return errors.New("link URL scheme must be http or https")
 		}
 		if host, port, err := net.SplitHostPort(linkURL.Host); err != nil {
-			return err
+			if !strings.HasPrefix(err.Error(), "missing port") {
+				return err
+			}
 		} else if port != "" {
 			return errors.New("non-standard link URL port is not allowed")
 		} else if !strings.Contains(host, ".") {
