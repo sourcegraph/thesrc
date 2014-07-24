@@ -98,6 +98,9 @@ func setDBCredentialsFromRDSEnv() {
 		"PGPORT":     "RDS_PORT",
 	}
 	for pgName, rdsName := range m {
+		if rdsVal := os.Getenv(rdsName); rdsVal == "" {
+			continue
+		}
 		if err := os.Setenv(pgName, os.Getenv(rdsName)); err != nil {
 			log.Fatal(err)
 		}
