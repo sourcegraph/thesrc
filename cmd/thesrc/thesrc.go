@@ -288,7 +288,7 @@ func firstWord(s string) string {
 
 func serveCmd(args []string) {
 	fs := flag.NewFlagSet("serve", flag.ExitOnError)
-	httpAddr := flag.String("http", ":5000", "HTTP service address")
+	httpAddr := fs.String("http", ":5000", "HTTP service address")
 	templateDir := fs.String("tmpl-dir", app.TemplateDir, "template directory")
 	staticDir := fs.String("static-dir", app.StaticDir, "static assets directory")
 	reload := flag.Bool("reload", true, "reload templates on each request (dev mode)")
