@@ -47,7 +47,7 @@ func (s *postsStore) List(opt *thesrc.PostListOptions) ([]*thesrc.Post, error) {
 		sql += " WHERE (" + strings.Join(conds, ") AND (") + ")"
 	}
 
-	sql += " LIMIT $1 OFFSET $2;"
+	sql += " ORDER BY submittedat DESC LIMIT $1 OFFSET $2;"
 
 	var posts []*thesrc.Post
 	err := s.dbh.Select(&posts, sql, opt.PerPageOrDefault(), opt.Offset())
