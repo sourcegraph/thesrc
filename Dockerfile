@@ -16,4 +16,6 @@ ADD . /thesrc/src/github.com/sourcegraph/thesrc
 RUN go get github.com/sourcegraph/thesrc/cmd/thesrc
 #RUN go install github.com/sourcegraph/thesrc/cmd/thesrc
 
-ENTRYPOINT ["thesrc"]
+EXPOSE 5000
+CMD ["serve", "-http=:5000"]
+ENTRYPOINT ["/usr/local/bin/thesrc"]
