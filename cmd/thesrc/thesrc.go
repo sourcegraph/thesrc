@@ -241,6 +241,8 @@ The options are:
 					changed := firstWord(c) != firstWord(post.Classification)
 					if changed {
 						post.Classification = c
+						// TODO(sqs): add post update endpoint so we can run
+						// `thesrc` against the HTTP API
 						if _, err := datastore.DBH.Update(post); err != nil {
 							log.Fatal(err)
 						}
