@@ -4,7 +4,6 @@ import (
 	"testing"
 
 	"github.com/sourcegraph/thesrc"
-	"github.com/sourcegraph/thesrc/datastore"
 )
 
 type mockFetcher struct {
@@ -19,7 +18,7 @@ func TestImport(t *testing.T) {
 	want := &thesrc.Post{Title: "t"}
 
 	var submitCalled bool
-	store = &datastore.Datastore{
+	store = &thesrc.Client{
 		Posts: &thesrc.MockPostsService{
 			Submit_: func(post *thesrc.Post) (bool, error) {
 				if post.Title != want.Title {

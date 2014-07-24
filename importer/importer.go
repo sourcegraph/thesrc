@@ -1,9 +1,6 @@
 package importer
 
-import (
-	"github.com/sourcegraph/thesrc"
-	"github.com/sourcegraph/thesrc/datastore"
-)
+import "github.com/sourcegraph/thesrc"
 
 var Fetchers = []Fetcher{}
 
@@ -16,7 +13,7 @@ type Fetcher interface {
 	Site() string
 }
 
-var store = datastore.NewDatastore(nil)
+var store = thesrc.NewClient(nil)
 
 // Import posts fetched by f. If Imported is non-nil, it is called each time a
 // post is successfully imported.
