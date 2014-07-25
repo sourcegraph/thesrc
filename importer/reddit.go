@@ -10,9 +10,10 @@ import (
 
 func init() {
 	Fetchers = append(Fetchers,
-		&subreddit{"programming"}, &subreddit{"ruby"}, &subreddit{"node"},
-		&subreddit{"python"}, &subreddit{"golang"}, &subreddit{"django"},
-		&subreddit{"rust"}, &subreddit{"postgresql"},
+		&subreddit{"programming"}, &subreddit{"golang"}, &subreddit{"postgresql"},
+		// &subreddit{"ruby"}, &subreddit{"node"},
+		// &subreddit{"python"}, , &subreddit{"django"},
+		// &subreddit{"rust"},
 	)
 }
 
