@@ -1,5 +1,7 @@
 # thesrc [![Build Status](https://travis-ci.org/sourcegraph/thesrc.png?branch=master)](https://travis-ci.org/sourcegraph/thesrc) [![docs examples](https://sourcegraph.com/api/repos/github.com/sourcegraph/thesrc/.badges/docs-examples.png)](https://sourcegraph.com/github.com/sourcegraph/thesrc) [![status](https://sourcegraph.com/api/repos/github.com/sourcegraph/thesrc/.badges/status.png)](https://sourcegraph.com/github.com/sourcegraph/thesrc) [![views](https://sourcegraph.com/api/repos/github.com/sourcegraph/thesrc/.counters/views.png)](https://sourcegraph.com/github.com/sourcegraph/thesrc)
 
+<img width=300 align=right src="https://s3-us-west-2.amazonaws.com/sourcegraph-assets/thesrc-screenshot.png">
+
 thesrc is a news site for programmers that's intended to be an example of how to
 structure a large Go web app. While this app is not large itself, it
 demonstrates the same patterns in the web app that powers
