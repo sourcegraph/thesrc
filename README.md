@@ -4,7 +4,7 @@
 
 thesrc is a news site for programmers that's intended to be an example of how to
 structure a large Go web app. While this app is not large itself, it
-demonstrates the same patterns in the web app that powers
+demonstrates the same patterns as in the web app that powers
 [Sourcegraph.com](https://sourcegraph.com).
 
 The web application architecture and patterns demonstrated here were presented
