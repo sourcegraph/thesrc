@@ -5,6 +5,10 @@ structure a large Go web app. While this app is not large itself, it
 demonstrates the same patterns in the web app that powers
 [Sourcegraph.com](https://sourcegraph.com).
 
+The web application architecture and patterns demonstrated here were presented
+in a talk at Google I/O 2014 entitled *[Building Sourcegraph, a large-scale code
+search engine in Go](https://sourcegraph.com/blog/google-io-2014-building-sourcegraph-a-large-scale-code-search-engine-in-go)*. See that talk for more details.
+
 thesrc has a few special features of interest to programmers:
 
 * just the good stuff: an automated classifier rejects links that don't contain code or involve programming;
