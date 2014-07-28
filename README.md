@@ -47,12 +47,13 @@ First, set the `PG*` environment variables so that `psql` works.
 Then run these commands to create the DB, import posts from other sites, and classify their links:
 
 ```
-thesrc createdb
-thesrc import
-thesrc classify
-
-# then, in a persistent terminal window:
+# start the server:
 thesrc serve
+
+# then, in a separate terminal window, run:
+thesrc -url=http://localhost:5000 createdb
+thesrc -url=http://localhost:5000 import
+thesrc -url=http://localhost:5000 classify
 
 # now open your browser to localhost:5000
 ```
