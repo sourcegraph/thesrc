@@ -48,7 +48,7 @@ func renderTemplate(w http.ResponseWriter, r *http.Request, name string, status 
 
 	// Write to a buffer to properly catch errors and avoid partial output written to the http.ResponseWriter
 	var buf bytes.Buffer
-	err := t.Execute(buf, data)
+	err := t.Execute(&buf, data)
 	if err != nil {
 		return err
 	}
