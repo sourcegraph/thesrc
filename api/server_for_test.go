@@ -26,6 +26,9 @@ func setup() {
 
 type muxTransport http.ServeMux
 
+// RoundTrip is a custom http.RoundTripper for testing API requests/responses.
+// It intercepts all HTTP requests during testing to serve up a local/internal
+// response instead of dialing out to the Host specified in the Client's BaseURL.
 func (t *muxTransport) RoundTrip(req *http.Request) (*http.Response, error) {
 	rw := httptest.NewRecorder()
 	rw.Body = new(bytes.Buffer)
