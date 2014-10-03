@@ -83,10 +83,8 @@ func TestPosts_List(t *testing.T) {
 	if !calledList {
 		t.Error("!calledList")
 	}
-	for i, _ := range posts {
-		if !normalizeDeepEqual(wantPosts[i], posts[i]) {
-			t.Errorf("got post %+v but wanted post %+v", posts[i], wantPosts[i])
-		}
-	}
 
+	if !normalizeDeepEqual(&wantPosts, &posts) {
+		t.Errorf("got post %+v but wanted post %+v", posts, wantPosts)
+	}
 }
