@@ -10,11 +10,11 @@ import (
 func normalize(v interface{}) {
 	j, err := json.Marshal(v)
 	if err != nil {
-		panic(fmt.Sprintf("Could not normalize object %+v due to JSON marshalling error: %s", err))
+		panic(fmt.Sprintf("Could not normalize object %+v due to JSON marshalling error: %s", v, err))
 	}
 	err = json.Unmarshal(j, v)
 	if err != nil {
-		panic(fmt.Sprintf("Could not normalize object %+v due to JSON un-marshalling error: %s", err))
+		panic(fmt.Sprintf("Could not normalize object %+v due to JSON un-marshalling error: %s", v, err))
 	}
 }
 
