@@ -18,7 +18,7 @@ func TestImport(t *testing.T) {
 	want := &thesrc.Post{Title: "t"}
 
 	var submitCalled bool
-	store = &thesrc.Client{
+	Store = &thesrc.Client{
 		Posts: &thesrc.MockPostsService{
 			Submit_: func(post *thesrc.Post) (bool, error) {
 				if post.Title != want.Title {

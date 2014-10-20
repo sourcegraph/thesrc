@@ -17,7 +17,7 @@ func servePost(w http.ResponseWriter, r *http.Request) error {
 		return err
 	}
 
-	post, err := apiclient.Posts.Get(id)
+	post, err := APIClient.Posts.Get(id)
 	if err != nil {
 		return err
 	}
@@ -41,7 +41,7 @@ func servePosts(w http.ResponseWriter, r *http.Request) error {
 		opt.PerPage = 60
 	}
 
-	posts, err := apiclient.Posts.List(&opt)
+	posts, err := APIClient.Posts.List(&opt)
 	if err != nil {
 		return err
 	}
@@ -79,7 +79,7 @@ func serveSubmitPost(w http.ResponseWriter, r *http.Request) error {
 		return err
 	}
 
-	if _, err := apiclient.Posts.Submit(&post); err != nil {
+	if _, err := APIClient.Posts.Submit(&post); err != nil {
 		return err
 	}
 

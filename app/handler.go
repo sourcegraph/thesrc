@@ -24,7 +24,7 @@ var (
 )
 
 var (
-	apiclient     = thesrc.NewClient(nil)
+	APIClient     = thesrc.NewClient(nil)
 	schemaDecoder = schema.NewDecoder()
 	appRouter     = router.App()
 )

@@ -61,6 +61,9 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	apiclient.BaseURL = baseURL.ResolveReference(&url.URL{Path: "/api/"})
+	app.APIClient = apiclient
+	importer.Store = apiclient
 
 	subcmd := flag.Arg(0)
 	for _, c := range subcmds {
