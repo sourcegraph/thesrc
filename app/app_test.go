@@ -19,11 +19,11 @@ func init() {
 func setup() {
 	testMux = http.NewServeMux()
 	testMux.Handle("/", Handler())
-	apiclient = nil
+	APIClient = nil
 }
 
 func teardown() {
-	apiclient, testMux = nil, nil
+	APIClient, testMux = nil, nil
 }
 
 func getHTML(t *testing.T, uri *url.URL) (*goquery.Document, *httptest.ResponseRecorder) {

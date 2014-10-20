@@ -13,7 +13,7 @@ type Fetcher interface {
 	Site() string
 }
 
-var store = thesrc.NewClient(nil)
+var Store = thesrc.NewClient(nil)
 
 // Import posts fetched by f. If Imported is non-nil, it is called each time a
 // post is successfully imported.
@@ -24,7 +24,7 @@ func Import(f Fetcher) error {
 	}
 
 	for _, post := range posts {
-		created, err := store.Posts.Submit(post)
+		created, err := Store.Posts.Submit(post)
 		if err != nil {
 			return err
 		}

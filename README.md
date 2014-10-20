@@ -47,7 +47,7 @@ Then run these commands to create the DB, import posts from other sites, and cla
 
 ```
 # start the server:
-thesrc serve
+thesrc -url=http://localhost:5000 serve
 
 # then, in a separate terminal window, run:
 thesrc -url=http://localhost:5000 createdb

@@ -20,7 +20,7 @@ func TestPost(t *testing.T) {
 	post := &thesrc.Post{ID: 1, Title: "t", LinkURL: "http://example.com", Body: "b"}
 
 	var called bool
-	apiclient = &thesrc.Client{
+	APIClient = &thesrc.Client{
 		Posts: &thesrc.MockPostsService{
 			Get_: func(id int) (*thesrc.Post, error) {
 				if id != post.ID {
@@ -63,7 +63,7 @@ func TestPosts(t *testing.T) {
 	posts := []*thesrc.Post{{ID: 1, Title: "t", LinkURL: "http://example.com", Body: "b"}}
 
 	var called bool
-	apiclient = &thesrc.Client{
+	APIClient = &thesrc.Client{
 		Posts: &thesrc.MockPostsService{
 			List_: func(opt *thesrc.PostListOptions) ([]*thesrc.Post, error) {
 				called = true
@@ -134,7 +134,7 @@ func TestSubmitPosts(t *testing.T) {
 	post := &thesrc.Post{ID: 0, Title: "t", LinkURL: "http://example.com", Body: "b"}
 
 	var called bool
-	apiclient = &thesrc.Client{
+	APIClient = &thesrc.Client{
 		Posts: &thesrc.MockPostsService{
 			Submit_: func(post *thesrc.Post) (bool, error) {
 				called = true
