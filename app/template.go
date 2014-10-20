@@ -7,6 +7,7 @@ import (
 	"log"
 	"net/http"
 	"net/url"
+	"os"
 	"path/filepath"
 	"strconv"
 	"time"
@@ -65,6 +66,8 @@ func parseHTMLTemplates(sets [][]string) error {
 			"urlDomain": urlDomain,
 			"urlTo":     urlTo,
 			"itoa":      strconv.Itoa,
+
+			"googleAnalyticsID": func() string { return os.Getenv("GOOGLE_ANALYTICS_ID") },
 		})
 
 		_, err := t.ParseFiles(joinTemplateDir(TemplateDir, set)...)
