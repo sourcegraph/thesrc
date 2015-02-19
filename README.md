@@ -1,4 +1,4 @@
-# thesrc [![Build Status](https://travis-ci.org/sourcegraph/thesrc.png?branch=master)](https://travis-ci.org/sourcegraph/thesrc) [![docs examples](https://sourcegraph.com/api/repos/github.com/sourcegraph/thesrc/.badges/docs-examples.png)](https://sourcegraph.com/github.com/sourcegraph/thesrc) [![status](https://sourcegraph.com/api/repos/github.com/sourcegraph/thesrc/.badges/status.png)](https://sourcegraph.com/github.com/sourcegraph/thesrc) [![views](https://sourcegraph.com/api/repos/github.com/sourcegraph/thesrc/.counters/views.png)](https://sourcegraph.com/github.com/sourcegraph/thesrc)
+# thesrc [![Build Status](https://travis-ci.org/sourcegraph/thesrc.png?branch=master)](https://travis-ci.org/sourcegraph/thesrc) [![docs examples](https://sourcegraph.com/api/repos/sourcegraph.com/sourcegraph/thesrc/.badges/docs-examples.png)](https://sourcegraph.com/sourcegraph/thesrc) [![status](https://sourcegraph.com/api/repos/sourcegraph.com/sourcegraph/thesrc/.badges/status.png)](https://sourcegraph.com/sourcegraph/thesrc) [![views](https://sourcegraph.com/api/repos/sourcegraph.com/sourcegraph/thesrc/.counters/views.png)](https://sourcegraph.com/sourcegraph/thesrc)
 
 <img width=300 align=right src="https://s3-us-west-2.amazonaws.com/sourcegraph-assets/thesrc-screenshot.png">
 
@@ -16,7 +16,7 @@ thesrc has a few special features of interest to programmers:
 * just the good stuff: an automated classifier rejects links that don't contain code or involve programming;
 * not a popularity contest: you can only see a link's score by mousing over it for a couple of seconds, and (TODO) freshly posted links are randomly rotated into the homepage;
 
-**Browse the code on [Sourcegraph](https://sourcegraph.com/github.com/sourcegraph/thesrc).**
+**Browse the code on [Sourcegraph](https://sourcegraph.com/sourcegraph/thesrc).**
 
 ## Installation
 
@@ -25,7 +25,7 @@ Use the `thesrc` command to interact with the app.
 You can either run it directly:
 
 ```
-go get -u github.com/sourcegraph/thesrc/...
+go get -u sourcegraph.com/sourcegraph/thesrc/...
 thesrc
 ```
 
