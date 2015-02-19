@@ -10,7 +10,7 @@ import (
 	"github.com/PuerkitoBio/goquery"
 	"github.com/peterbourgon/diskv"
 	"github.com/sourcegraph/httpcache/diskcache"
-	"github.com/sourcegraph/thesrc"
+	"sourcegraph.com/sourcegraph/thesrc"
 )
 
 func Classify(post *thesrc.Post) (string, error) {

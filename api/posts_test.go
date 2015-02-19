@@ -3,7 +3,7 @@ package api
 import (
 	"testing"
 
-	"github.com/sourcegraph/thesrc"
+	"sourcegraph.com/sourcegraph/thesrc"
 )
 
 func TestPost(t *testing.T) {

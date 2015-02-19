@@ -3,7 +3,7 @@ package importer
 import (
 	"testing"
 
-	"github.com/sourcegraph/thesrc"
+	"sourcegraph.com/sourcegraph/thesrc"
 )
 
 type mockFetcher struct {

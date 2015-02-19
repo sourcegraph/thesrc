@@ -9,8 +9,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/sourcegraph/thesrc"
-	"github.com/sourcegraph/thesrc/router"
+	"sourcegraph.com/sourcegraph/thesrc"
+	"sourcegraph.com/sourcegraph/thesrc/router"
 )
 
 func TestPost(t *testing.T) {

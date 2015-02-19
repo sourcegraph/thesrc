@@ -7,8 +7,8 @@ import (
 	"strings"
 
 	"github.com/gorilla/mux"
-	"github.com/sourcegraph/thesrc"
-	"github.com/sourcegraph/thesrc/router"
+	"sourcegraph.com/sourcegraph/thesrc"
+	"sourcegraph.com/sourcegraph/thesrc/router"
 )
 
 func servePost(w http.ResponseWriter, r *http.Request) error {

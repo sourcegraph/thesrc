@@ -1,6 +1,6 @@
 package importer
 
-import "github.com/sourcegraph/thesrc"
+import "sourcegraph.com/sourcegraph/thesrc"
 
 var Fetchers = []Fetcher{}
 

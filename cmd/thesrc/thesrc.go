@@ -11,13 +11,13 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/sourcegraph/thesrc"
-	"github.com/sourcegraph/thesrc/api"
-	"github.com/sourcegraph/thesrc/app"
-	"github.com/sourcegraph/thesrc/classifier"
-	"github.com/sourcegraph/thesrc/datastore"
-	"github.com/sourcegraph/thesrc/importer"
-	"github.com/sourcegraph/thesrc/router"
+	"sourcegraph.com/sourcegraph/thesrc"
+	"sourcegraph.com/sourcegraph/thesrc/api"
+	"sourcegraph.com/sourcegraph/thesrc/app"
+	"sourcegraph.com/sourcegraph/thesrc/classifier"
+	"sourcegraph.com/sourcegraph/thesrc/datastore"
+	"sourcegraph.com/sourcegraph/thesrc/importer"
+	"sourcegraph.com/sourcegraph/thesrc/router"
 )
 
 var (

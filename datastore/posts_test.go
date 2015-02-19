@@ -4,7 +4,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/sourcegraph/thesrc"
+	"sourcegraph.com/sourcegraph/thesrc"
 )
 
 func TestPostsStore_Get_db(t *testing.T) {

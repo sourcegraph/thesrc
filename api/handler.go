@@ -7,8 +7,8 @@ import (
 
 	"github.com/gorilla/mux"
 	"github.com/gorilla/schema"
-	"github.com/sourcegraph/thesrc/datastore"
-	"github.com/sourcegraph/thesrc/router"
+	"sourcegraph.com/sourcegraph/thesrc/datastore"
+	"sourcegraph.com/sourcegraph/thesrc/router"
 )
 
 var (

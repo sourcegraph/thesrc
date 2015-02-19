@@ -2,7 +2,7 @@ package datastore
 
 import (
 	"github.com/jmoiron/modl"
-	"github.com/sourcegraph/thesrc"
+	"sourcegraph.com/sourcegraph/thesrc"
 )
 
 // A Datastore accesses the datastore (in PostgreSQL).

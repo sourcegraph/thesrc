@@ -11,8 +11,8 @@ import (
 
 	"github.com/gorilla/mux"
 	"github.com/gorilla/schema"
-	"github.com/sourcegraph/thesrc"
-	"github.com/sourcegraph/thesrc/router"
+	"sourcegraph.com/sourcegraph/thesrc"
+	"sourcegraph.com/sourcegraph/thesrc/router"
 )
 
 var (
@@ -20,7 +20,7 @@ var (
 	ReloadTemplates bool
 
 	// StaticDir is the directory containing static assets.
-	StaticDir = filepath.Join(defaultBase("github.com/sourcegraph/thesrc/app"), "static")
+	StaticDir = filepath.Join(defaultBase("sourcegraph.com/sourcegraph/thesrc/app"), "static")
 )
 
 var (

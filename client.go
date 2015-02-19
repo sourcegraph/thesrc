@@ -11,7 +11,7 @@ import (
 	"strings"
 
 	"github.com/google/go-querystring/query"
-	"github.com/sourcegraph/thesrc/router"
+	"sourcegraph.com/sourcegraph/thesrc/router"
 )
 
 // A Client communicates with thesrc's HTTP API.

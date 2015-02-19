@@ -11,10 +11,10 @@ ENV GOBIN /usr/local/bin
 ENV PATH /usr/local/go/bin:$PATH
 ENV GOPATH /thesrc
 
-ADD . /thesrc/src/github.com/sourcegraph/thesrc
+ADD . /thesrc/src/sourcegraph.com/sourcegraph/thesrc
 
-RUN go get github.com/sourcegraph/thesrc/cmd/thesrc
-#RUN go install github.com/sourcegraph/thesrc/cmd/thesrc
+RUN go get sourcegraph.com/sourcegraph/thesrc/cmd/thesrc
+#RUN go install sourcegraph.com/sourcegraph/thesrc/cmd/thesrc
 
 EXPOSE 5000
 CMD ["serve", "-http=:5000"]

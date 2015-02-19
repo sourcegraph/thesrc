@@ -6,7 +6,7 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/sourcegraph/thesrc/router"
+	"sourcegraph.com/sourcegraph/thesrc/router"
 )
 
 // A Post is a link and short body submitted to and displayed on thesrc.

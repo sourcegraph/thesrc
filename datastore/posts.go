@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"github.com/jmoiron/modl"
-	"github.com/sourcegraph/thesrc"
+	"sourcegraph.com/sourcegraph/thesrc"
 )
 
 func init() {

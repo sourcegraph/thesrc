@@ -15,7 +15,7 @@ import (
 
 var (
 	// TemplateDir is the directory containing the html/template template files.
-	TemplateDir = filepath.Join(defaultBase("github.com/sourcegraph/thesrc/app"), "tmpl")
+	TemplateDir = filepath.Join(defaultBase("sourcegraph.com/sourcegraph/thesrc/app"), "tmpl")
 )
 
 func LoadTemplates() {

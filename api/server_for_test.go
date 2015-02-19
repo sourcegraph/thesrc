@@ -6,8 +6,8 @@ import (
 	"net/http"
 	"net/http/httptest"
 
-	"github.com/sourcegraph/thesrc"
-	"github.com/sourcegraph/thesrc/datastore"
+	"sourcegraph.com/sourcegraph/thesrc"
+	"sourcegraph.com/sourcegraph/thesrc/datastore"
 )
 
 func init() {
